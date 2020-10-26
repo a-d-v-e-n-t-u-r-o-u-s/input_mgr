@@ -41,7 +41,7 @@ static void input_mgr_main(void)
         {
             input_mgr_cnt[i]++;
 
-            if(input_mgr_cnt > 3U && !input_mgr_flags[i])
+            if(input_mgr_cnt[i] > 3U && !input_mgr_flags[i])
             {
                 if(input_mgr[i].callback != NULL)
                 {
