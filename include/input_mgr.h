@@ -26,13 +26,23 @@
 
 #include <stdint.h>
 
-typedef void (*INPUT_MGR_callback_t)(void);
+#define BUTTON_SHORT_PRESSED    (0U)
+#define BUTTON_LONG_PRESSED     (1U)
+#define BUTTON_RELEASED         (2U)
 
 typedef struct
 {
+    uint8_t id;
+    uint8_t event;
+} INPUT_MGR_event_t;
+
+typedef struct
+{
+    uint8_t id;
     uint8_t gpio_config[2];
-    INPUT_MGR_callback_t callback;
 } INPUT_MGR_config_t;
+
+int8_t INPUT_MGR_get_event(INPUT_MGR_event_t *event);
 
 int8_t INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size);
 #endif
