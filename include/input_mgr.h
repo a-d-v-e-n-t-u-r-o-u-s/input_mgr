@@ -43,6 +43,5 @@ typedef struct
 } INPUT_MGR_config_t;
 
 int8_t INPUT_MGR_get_event(INPUT_MGR_event_t *event);
-
-int8_t INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size);
+void INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size);
 #endif

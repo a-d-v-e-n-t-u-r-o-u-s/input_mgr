@@ -20,11 +20,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#define DEBUG_APP_ID "INPM"
+
 #include "input_mgr.h"
 #include <stddef.h>
 #include "system.h"
 #include "gpio.h"
 #include "fifo.h"
+#include "debug.h"
 
 #define MAIN_CYCLE          (10U)
 #define SHORT_PRESS_TIME    (20U)
@@ -113,17 +116,14 @@ int8_t INPUT_MGR_get_event(INPUT_MGR_event_t *event)
     return FIFO_dequeue(&fifo, event);
 }
 
-int8_t INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size)
+void INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size)
 {
-    if(config == NULL)
-    {
-        return -1;
-    }
+    ASSERT(config != NULL);
 
-    if(SYSTEM_register_task(input_mgr_main, MAIN_CYCLE) != 0)
-    {
-        return -1;
-    }
+    int8_t ret = SYSTEM_register_task(input_mgr_main, MAIN_CYCLE);
+
+    (void) ret;
+    ASSERT(ret == 0);
 
     for(uint8_t i = 0U; i < size; i++)
     {
@@ -144,6 +144,4 @@ int8_t INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size)
 
     input_mgr = config;
     input_mgr_size = size;
-
-    return 0;
 }
