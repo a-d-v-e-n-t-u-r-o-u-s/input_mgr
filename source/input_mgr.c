@@ -45,7 +45,7 @@ static bool short_presses[2];
 static bool long_presses[2];
 static bool releases[2];
 static FIFO_t fifo;
-uint8_t buffer[64];
+static uint8_t buffer[64];
 
 
 static void input_mgr_main(void)
