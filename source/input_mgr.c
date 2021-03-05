@@ -119,11 +119,7 @@ int8_t INPUT_MGR_get_event(INPUT_MGR_event_t *event)
 void INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size)
 {
     ASSERT(config != NULL);
-
-    int8_t ret = SYSTEM_register_task(input_mgr_main, MAIN_CYCLE);
-
-    (void) ret;
-    ASSERT(ret == 0);
+    SYSTEM_register_task(input_mgr_main, MAIN_CYCLE);
 
     for(uint8_t i = 0U; i < size; i++)
     {
