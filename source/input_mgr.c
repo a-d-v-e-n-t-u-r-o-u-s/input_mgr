@@ -21,6 +21,8 @@
  *
  */
 #define DEBUG_APP_ID "INPM"
+#define DEBUG_ENABLED   DEBUG_INPM_ENABLED
+#define DEBUG_LEVEL     DEBUG_INPM_LEVEL
 
 #include "input_mgr.h"
 #include <stddef.h>
