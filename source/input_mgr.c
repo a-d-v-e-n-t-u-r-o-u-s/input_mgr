@@ -26,6 +26,8 @@
 
 #include "input_mgr.h"
 #include <stddef.h>
+#include <avr/pgmspace.h>
+#include "hardware.h"
 #include "system.h"
 #include "gpio.h"
 #include "fifo.h"
@@ -39,8 +41,6 @@
 #define RELEASE_TIME        (20U)
 #define RELEASE_CNT         (RELEASE_TIME / MAIN_CYCLE)
 
-static const INPUT_MGR_config_t *input_mgr;
-static uint8_t input_mgr_size;
 static uint8_t press_cnt[2];
 static uint8_t release_cnt[2];
 static bool short_presses[2];
@@ -52,18 +52,19 @@ static uint8_t buffer[64];
 
 static void input_mgr_main(void)
 {
-    for(uint8_t i = 0U; i < input_mgr_size; i++)
-    {
-        const uint8_t port = input_mgr[i].gpio_config[0];
-        const uint8_t pin = input_mgr[i].gpio_config[1];
+    const uint8_t size = sizeof(input_mgr_config)/sizeof(input_mgr_config[0]);
 
+    for(uint8_t i = 0U; i < size; i++)
+    {
         INPUT_MGR_event_t event =
         {
             .id = i,
             .event = BUTTON_SHORT_PRESSED
         };
 
-        if(!GPIO_read_pin(port, pin))
+        const uint8_t pin = pgm_read_byte(&input_mgr_config[i]);
+
+        if(!GPIO_read_pin(pin))
         {
             press_cnt[i]++;
             release_cnt[i] = 0u;
@@ -118,18 +119,9 @@ int8_t INPUT_MGR_get_event(INPUT_MGR_event_t *event)
     return FIFO_dequeue(&fifo, event);
 }
 
-void INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size)
+void INPUT_MGR_initialize(void)
 {
-    ASSERT(config != NULL);
     SYSTEM_register_task(input_mgr_main, MAIN_CYCLE);
-
-    for(uint8_t i = 0U; i < size; i++)
-    {
-        const uint8_t port = config[i].gpio_config[0];
-        const uint8_t pin = config[i].gpio_config[1];
-
-        GPIO_config_pin(port, pin, GPIO_INPUT_FLOATING);
-    }
 
     FIFO_config_t fifo_config =
     {
@@ -140,6 +132,4 @@ void INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size)
 
     FIFO_configure(&fifo, &fifo_config);
 
-    input_mgr = config;
-    input_mgr_size = size;
 }

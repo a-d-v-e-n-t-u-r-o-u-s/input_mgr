@@ -36,12 +36,6 @@ typedef struct
     uint8_t event;
 } INPUT_MGR_event_t;
 
-typedef struct
-{
-    uint8_t id;
-    uint8_t gpio_config[2];
-} INPUT_MGR_config_t;
-
 int8_t INPUT_MGR_get_event(INPUT_MGR_event_t *event);
-void INPUT_MGR_initialize(const INPUT_MGR_config_t *config, uint8_t size);
+void INPUT_MGR_initialize(void);
 #endif
