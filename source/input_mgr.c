@@ -73,14 +73,14 @@ static void input_mgr_main(void)
             bool const is_short_press = (press_cnt[i] >= SHORT_PRESS_CNT);
             bool const is_long_press = (press_cnt[i] >= LONG_PRESS_CNT);
 
-            if(is_short_press && !short_presses[i])
+            if(is_short_press && (!short_presses[i]))
             {
 
                 FIFO_enqueue(&fifo, (const void *) &event);
                 short_presses[i] = true;
             }
 
-            if(is_long_press && !long_presses[i])
+            if(is_long_press && (!long_presses[i]))
             {
                 event.event = BUTTON_LONG_PRESSED;
                 FIFO_enqueue(&fifo, (const void *) &event);
@@ -95,7 +95,7 @@ static void input_mgr_main(void)
 
                 bool const is_release = (release_cnt[i] >= RELEASE_CNT);
 
-                if(is_release && !releases[i])
+                if(is_release && (!releases[i]))
                 {
                     event.event = BUTTON_RELEASED;
                     FIFO_enqueue(&fifo, (const void *) &event);
