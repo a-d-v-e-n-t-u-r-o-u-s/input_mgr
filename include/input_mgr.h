@@ -26,9 +26,26 @@
 
 #include <stdint.h>
 
+/*!
+ *
+ * \addtogroup input_mgr
+ * \ingroup modules
+ * \brief Input manager
+ */
+
+/*@{*/
+
+/*!
+ *
+ * \addtogroup input_mgr_events
+ * \ingroup input_mgs
+ * \brief Input manager events
+ */
+/*@{*/
 #define BUTTON_SHORT_PRESSED    (0U)
 #define BUTTON_LONG_PRESSED     (1U)
 #define BUTTON_RELEASED         (2U)
+/*@}*/
 
 typedef struct
 {
@@ -36,6 +53,20 @@ typedef struct
     uint8_t event;
 } INPUT_MGR_event_t;
 
+/*!
+ * \brief Gets input manager event
+ *
+ * \param event storage for event
+ *
+ * \retval 0 success, event valid
+ * \retval -1 failure, no valid event
+ */
 int8_t INPUT_MGR_get_event(INPUT_MGR_event_t *event);
+
+/*!
+ * \brief Initializes input manager
+ */
 void INPUT_MGR_initialize(void);
+
+/*@}*/
 #endif

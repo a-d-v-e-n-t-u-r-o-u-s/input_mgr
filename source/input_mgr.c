@@ -67,7 +67,7 @@ static void input_mgr_main(void)
         if(!GPIO_read_pin(pin))
         {
             press_cnt[i]++;
-            release_cnt[i] = 0u;
+            release_cnt[i] = 0U;
             releases[i] = false;
 
             bool const is_short_press = (press_cnt[i] >= SHORT_PRESS_CNT);
@@ -100,7 +100,7 @@ static void input_mgr_main(void)
                     event.event = BUTTON_RELEASED;
                     FIFO_enqueue(&fifo, (const void *) &event);
                     releases[i] = true;
-                    press_cnt[i] = 0u;
+                    press_cnt[i] = 0U;
                     short_presses[i] = false;
                     long_presses[i] = false;
                 }
