@@ -87,24 +87,25 @@ static void input_mgr_main(void)
                 long_presses[i] = true;
             }
         }
+        else if(short_presses[i] || long_presses[i])
+        {
+            release_cnt[i]++;
+
+            bool const is_release = (release_cnt[i] >= RELEASE_CNT);
+
+            if(is_release && (!releases[i]))
+            {
+                event.event = BUTTON_RELEASED;
+                FIFO_enqueue(&fifo, (const void *) &event);
+                releases[i] = true;
+                press_cnt[i] = 0U;
+                short_presses[i] = false;
+                long_presses[i] = false;
+            }
+        }
         else
         {
-            if(short_presses[i] || long_presses[i])
-            {
-                release_cnt[i]++;
-
-                bool const is_release = (release_cnt[i] >= RELEASE_CNT);
-
-                if(is_release && (!releases[i]))
-                {
-                    event.event = BUTTON_RELEASED;
-                    FIFO_enqueue(&fifo, (const void *) &event);
-                    releases[i] = true;
-                    press_cnt[i] = 0U;
-                    short_presses[i] = false;
-                    long_presses[i] = false;
-                }
-            }
+            /* do nothing */
         }
     }
 }
